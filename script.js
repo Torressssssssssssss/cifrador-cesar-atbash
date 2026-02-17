@@ -19,17 +19,34 @@ const editAlphabetBtn = document.getElementById("editAlphabetBtn");
 const copyEncryptBtn = document.getElementById("copyEncryptBtn");
 const copyDecryptBtn = document.getElementById("copyDecryptBtn");
 
-document.getElementById("encryptBtn").addEventListener("click", cifrar);
-document.getElementById("decryptBtn").addEventListener("click", descifrar);
-document.getElementById("detectBtn").addEventListener("click", detectar);
-document.getElementById("clearBtn").addEventListener("click", limpiar);
+// Event listeners para cifrar y descifrar
+const encryptBtn = document.getElementById("encryptBtn");
+const decryptBtn = document.getElementById("decryptBtn");
+const detectBtn = document.getElementById("detectBtn");
+const clearBtn = document.getElementById("clearBtn");
 
-editAlphabetBtn.addEventListener("click", toggleEditAlphabet);
-copyEncryptBtn.addEventListener("click", () => copiarResultado("encrypt"));
-copyDecryptBtn.addEventListener("click", () => copiarResultado("decrypt"));
+if (encryptBtn) encryptBtn.addEventListener("click", cifrar);
+if (decryptBtn) decryptBtn.addEventListener("click", descifrar);
+if (detectBtn) detectBtn.addEventListener("click", detectar);
+if (clearBtn) clearBtn.addEventListener("click", limpiar);
 
-btnCesar.addEventListener("click", () => setMetodo("cesar"));
-btnAtbash.addEventListener("click", () => setMetodo("atbash"));
+if (editAlphabetBtn) editAlphabetBtn.addEventListener("click", toggleEditAlphabet);
+if (copyEncryptBtn) copyEncryptBtn.addEventListener("click", () => copiarResultado("encrypt"));
+if (copyDecryptBtn) copyDecryptBtn.addEventListener("click", () => copiarResultado("decrypt"));
+
+// Event listeners para cambiar método
+if (btnCesar) {
+  btnCesar.addEventListener("click", function() {
+    console.log("Clic en Cesar");
+    setMetodo("cesar");
+  });
+}
+if (btnAtbash) {
+  btnAtbash.addEventListener("click", function() {
+    console.log("Clic en Atbash");
+    setMetodo("atbash");
+  });
+}
 
 function toUpperSafe(s){
   return (s || "").toUpperCase();
@@ -45,13 +62,31 @@ function normalizeAlphabet(alfabeto){
 
 function setMetodo(nuevo){
   metodo = nuevo;
+  console.log("Método cambiado a:", metodo);
 
-  btnCesar.classList.toggle("is-active", metodo === "cesar");
-  btnAtbash.classList.toggle("is-active", metodo === "atbash");
+  if (btnCesar) {
+    if (metodo === "cesar") {
+      btnCesar.classList.add("is-active");
+    } else {
+      btnCesar.classList.remove("is-active");
+    }
+  }
 
-  shiftField.style.display = (metodo === "cesar") ? "block" : "none";
+  if (btnAtbash) {
+    if (metodo === "atbash") {
+      btnAtbash.classList.add("is-active");
+    } else {
+      btnAtbash.classList.remove("is-active");
+    }
+  }
 
-  outputBox.textContent = "Modulo activo: " + metodo.toUpperCase();
+  if (shiftField) {
+    shiftField.style.display = (metodo === "cesar") ? "block" : "none";
+  }
+
+  if (outputBox) {
+    outputBox.textContent = "Modulo activo: " + metodo.toUpperCase();
+  }
 }
 
 function toggleEditAlphabet(){
