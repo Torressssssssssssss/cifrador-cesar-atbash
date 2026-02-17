@@ -33,11 +33,10 @@
         <div class="field">
           <label for="alphabet">Alfabeto (conjunto de caracteres)</label>
           <div style="display: flex; gap: 8px;">
-            <input id="alphabet" type="text"
-              value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            <textarea id="alphabet"
               placeholder="Ej: ABCDEFGHIJKLMNOPQRSTUVWXYZ"
               readonly
-              style="flex: 1;" />
+              style="flex: 1; resize: none; font-family: monospace;">!&quot;#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz{|}~`</textarea>
             <!-- Boton para editar alfabeto -->
             <button id="editAlphabetBtn" class="btn-icon" type="button" title="Editar alfabeto">
               <svg id="editIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -46,7 +45,7 @@
               </svg>
             </button>
           </div>
-          <div class="hint">Ojo: El programa convierte automaticamente a mayusculas.</div>
+          <div class="hint">Ojo: Puedes usar mayúsculas y minúsculas en tu mensaje.</div>
         </div>
 
         <!-- Campo de desplazamiento (solo visible para Cesar) -->
@@ -75,7 +74,7 @@
 
           <div class="field">
             <label for="messageEncrypt">Texto claro</label>
-            <textarea id="messageEncrypt" rows="4" placeholder="Escribe el mensaje que quieres cifrar..." style="text-transform: uppercase;"></textarea>
+            <textarea id="messageEncrypt" rows="4" placeholder="Escribe el mensaje que quieres cifrar..."></textarea>
           </div>
 
           <div class="actions">
@@ -108,7 +107,7 @@
 
           <div class="field">
             <label for="messageDecrypt">Texto cifrado</label>
-            <textarea id="messageDecrypt" rows="4" placeholder="Pega aqui el mensaje cifrado..." style="text-transform: uppercase;"></textarea>
+            <textarea id="messageDecrypt" rows="4" placeholder="Pega aqui el mensaje cifrado..."></textarea>
           </div>
 
           <div class="actions">

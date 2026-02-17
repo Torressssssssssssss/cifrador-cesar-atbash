@@ -100,7 +100,7 @@ function toggleEditAlphabet(){
     editIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
     editAlphabetBtn.title = "Guardar alfabeto";
   } else {
-    let nuevo = toUpperSafe(alphabetInput.value);
+    let nuevo = alphabetInput.value;
     nuevo = normalizeAlphabet(nuevo);
     alphabetInput.value = nuevo;
 
@@ -184,8 +184,8 @@ function atbash(texto, alfabeto){
 }
 
 function cifrar(){
-  const texto = toUpperSafe(messageEncryptInput.value);
-  const alfabeto = normalizeAlphabet(toUpperSafe(alphabetInput.value));
+  const texto = messageEncryptInput.value;
+  const alfabeto = normalizeAlphabet(alphabetInput.value);
 
   if (!texto){
     outputEncryptBox.textContent = "Error: Escribe un mensaje para cifrar.";
@@ -209,8 +209,8 @@ function cifrar(){
 }
 
 function descifrar(){
-  const texto = toUpperSafe(messageDecryptInput.value);
-  const alfabeto = normalizeAlphabet(toUpperSafe(alphabetInput.value));
+  const texto = messageDecryptInput.value;
+  const alfabeto = normalizeAlphabet(alphabetInput.value);
 
   if (!texto){
     outputDecryptBox.textContent = "Error: Escribe un mensaje cifrado para descifrar.";
@@ -234,11 +234,11 @@ function descifrar(){
 }
 
 function detectar(){
-  const textoEncrypt = toUpperSafe(messageEncryptInput.value);
-  const textoDecrypt = toUpperSafe(messageDecryptInput.value);
+  const textoEncrypt = messageEncryptInput.value;
+  const textoDecrypt = messageDecryptInput.value;
   const texto = textoEncrypt || textoDecrypt;
 
-  const alfabeto = normalizeAlphabet(toUpperSafe(alphabetInput.value));
+  const alfabeto = normalizeAlphabet(alphabetInput.value);
 
   if (!texto || alfabeto.length < 2){
     outputBox.textContent = "Error: Necesitas un texto y un alfabeto valido (min. 2 caracteres).";
