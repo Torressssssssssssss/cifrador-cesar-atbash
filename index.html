@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cifrador Cesar / Atbash</title>
+  <!-- Importacion de estilos CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="paper">
+    <!-- ==================== ENCABEZADO ==================== -->
+    <header class="header">
+      <div class="kicker">Herramienta de Criptografia Clasica</div>
+      <h1 class="title">Cifrador Cesar y Atbash</h1>
+      <div class="subtitle">Cifrado y descifrado basado en ASCII y alfabeto definido por el usuario</div>
+      <hr class="rule"/>
+    </header>
+
+    <!-- ==================== SECCION 1: SELECCION DE METODO ==================== -->
+    <section class="panel">
+      <h2 class="section-title">Selecciona el tipo de cifrado</h2>
+
+      <!-- Botones de seleccion: Cesar o Atbash -->
+      <div class="toggle" role="group" aria-label="Seleccionar cifrado">
+        <button id="btnCesar" class="toggle-btn is-active" type="button">Cesar</button>
+        <button id="btnAtbash" class="toggle-btn" type="button">Atbash</button>
+      </div>
+
+      <div class="grid">
+        <!-- Campo de alfabeto (bloqueado por defecto) -->
+        <div class="field">
+          <label for="alphabet">Alfabeto (conjunto de caracteres)</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="alphabet" type="text"
+              value="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+              placeholder="Ej: ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+              readonly
+              style="flex: 1;" />
+            <!-- Boton para editar alfabeto -->
+            <button id="editAlphabetBtn" class="btn-icon" type="button" title="Editar alfabeto">
+              <svg id="editIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="hint">Tip: el programa convierte automaticamente a mayusculas.</div>
+        </div>
+
+        <!-- Campo de desplazamiento (solo visible para Cesar) -->
+        <div class="field" id="shiftField">
+          <label for="shift">Desplazamiento (solo Cesar)</label>
+          <input id="shift" type="number" value="3" />
+          <div class="hint">Se usa aritmetica modular dentro del alfabeto.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCION 2: CIFRAR Y DESCIFRAR ==================== -->
+    <section class="panel">
+      <h2 class="section-title">Cifrar y Descifrar</h2>
+
+      <div class="grid-two">
+        <!-- ========== COLUMNA IZQUIERDA: CIFRAR ========== -->
+        <div class="card-encrypt">
+          <h3 class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Cifrar mensaje
+          </h3>
+
+          <div class="field">
+            <label for="messageEncrypt">Texto claro</label>
+            <textarea id="messageEncrypt" rows="4" placeholder="Escribe el mensaje que quieres cifrar..." style="text-transform: uppercase;"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="encryptBtn" type="button">Cifrar</button>
+          </div>
+
+          <div class="output">
+            <div class="output-title">Resultado</div>
+            <div style="display: flex; gap: 8px; align-items: flex-start;">
+              <pre id="outputEncrypt" class="output-box" style="flex: 1;">Esperando mensaje...</pre>
+              <button class="btn-icon" id="copyEncryptBtn" type="button" title="Copiar resultado" style="height: 40px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== COLUMNA DERECHA: DESCIFRAR ========== -->
+        <div class="card-decrypt">
+          <h3 class="card-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+            </svg>
+            Descifrar mensaje
+          </h3>
+
+          <div class="field">
+            <label for="messageDecrypt">Texto cifrado</label>
+            <textarea id="messageDecrypt" rows="4" placeholder="Pega aqui el mensaje cifrado..." style="text-transform: uppercase;"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="decryptBtn" type="button">Descifrar</button>
+          </div>
+
+          <div class="output">
+            <div class="output-title">Resultado</div>
+            <div style="display: flex; gap: 8px; align-items: flex-start;">
+              <pre id="outputDecrypt" class="output-box" style="flex: 1;">Esperando mensaje cifrado...</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECCION 3: HERRAMIENTAS ADICIONALES ==================== -->
+    <section class="panel">
+      <h2 class="section-title">Herramientas adicionales</h2>
+
+      <div class="actions">
+        <button class="btn btn-ghost" id="detectBtn" type="button">Detectar modulo</button>
+        <button class="btn btn-danger" id="clearBtn" type="button">Limpiar todo</button>
+      </div>
+
+      <div class="output">
+        <div class="output-title">Analisis</div>
+        <pre id="output" class="output-box">Listo.</pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <hr class="rule"/>
+    </footer>
+  </main>
+
+  <!-- Importacion del archivo JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
