@@ -1,7 +1,7 @@
-// ==================== CIFRADOR CESAR Y ATBASH ====================
-
+//1
 let metodo = "cesar";
 
+//2
 const btnCesar = document.getElementById("btnCesar");
 const btnAtbash = document.getElementById("btnAtbash");
 const shiftField = document.getElementById("shiftField");
@@ -17,14 +17,14 @@ const outputBox = document.getElementById("output");
 
 const editAlphabetBtn = document.getElementById("editAlphabetBtn");
 const copyEncryptBtn = document.getElementById("copyEncryptBtn");
-const copyDecryptBtn = document.getElementById("copyDecryptBtn");
+const copyDecryptBtn = document.getElementById("copyDecryptBtn"); // puede ser null si no existe en HTML
 
-// Event listeners para cifrar y descifrar
 const encryptBtn = document.getElementById("encryptBtn");
 const decryptBtn = document.getElementById("decryptBtn");
 const detectBtn = document.getElementById("detectBtn");
 const clearBtn = document.getElementById("clearBtn");
 
+//3
 if (encryptBtn) encryptBtn.addEventListener("click", cifrar);
 if (decryptBtn) decryptBtn.addEventListener("click", descifrar);
 if (detectBtn) detectBtn.addEventListener("click", detectar);
@@ -34,50 +34,30 @@ if (editAlphabetBtn) editAlphabetBtn.addEventListener("click", toggleEditAlphabe
 if (copyEncryptBtn) copyEncryptBtn.addEventListener("click", () => copiarResultado("encrypt"));
 if (copyDecryptBtn) copyDecryptBtn.addEventListener("click", () => copiarResultado("decrypt"));
 
-// Event listeners para cambiar método
-if (btnCesar) {
-  btnCesar.addEventListener("click", function() {
-    console.log("Clic en Cesar");
-    setMetodo("cesar");
-  });
-}
-if (btnAtbash) {
-  btnAtbash.addEventListener("click", function() {
-    console.log("Clic en Atbash");
-    setMetodo("atbash");
-  });
-}
+if (btnCesar) btnCesar.addEventListener("click", () => setMetodo("cesar"));
+if (btnAtbash) btnAtbash.addEventListener("click", () => setMetodo("atbash"));
 
-function toUpperSafe(s){
-  return (s || "").toUpperCase();
-}
-
-function normalizeAlphabet(alfabeto){
+//4
+function normalizeAlphabet(alfabeto) {
   let res = "";
-  for (let c of alfabeto){
+  for (let c of (alfabeto || "")) {
     if (!res.includes(c)) res += c;
   }
   return res;
 }
 
-function setMetodo(nuevo){
+//5
+function setMetodo(nuevo) {
   metodo = nuevo;
-  console.log("Método cambiado a:", metodo);
 
   if (btnCesar) {
-    if (metodo === "cesar") {
-      btnCesar.classList.add("is-active");
-    } else {
-      btnCesar.classList.remove("is-active");
-    }
+    if (metodo === "cesar") btnCesar.classList.add("is-active");
+    else btnCesar.classList.remove("is-active");
   }
 
   if (btnAtbash) {
-    if (metodo === "atbash") {
-      btnAtbash.classList.add("is-active");
-    } else {
-      btnAtbash.classList.remove("is-active");
-    }
+    if (metodo === "atbash") btnAtbash.classList.add("is-active");
+    else btnAtbash.classList.remove("is-active");
   }
 
   if (shiftField) {
@@ -85,42 +65,49 @@ function setMetodo(nuevo){
   }
 
   if (outputBox) {
-    outputBox.textContent = "Modulo activo: " + metodo.toUpperCase();
+    outputBox.textContent = "Modulo activo: " + String(metodo).toUpperCase();
   }
 }
 
-function toggleEditAlphabet(){
+//6
+function toggleEditAlphabet() {
+  if (!alphabetInput) return;
+
   const isReadonly = alphabetInput.hasAttribute("readonly");
   const editIcon = document.getElementById("editIcon");
 
-  if (isReadonly){
+  if (isReadonly) {
     alphabetInput.removeAttribute("readonly");
     alphabetInput.focus();
     alphabetInput.select();
-    editIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-    editAlphabetBtn.title = "Guardar alfabeto";
+
+    if (editIcon) editIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+    if (editAlphabetBtn) editAlphabetBtn.title = "Guardar alfabeto";
   } else {
-    let nuevo = alphabetInput.value;
-    nuevo = normalizeAlphabet(nuevo);
+    let nuevo = normalizeAlphabet(alphabetInput.value);
     alphabetInput.value = nuevo;
 
     alphabetInput.setAttribute("readonly", "readonly");
-    editIcon.innerHTML =
-      '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>' +
-      '<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>';
-    editAlphabetBtn.title = "Editar alfabeto";
 
-    outputBox.textContent = "Alfabeto actualizado: " + alphabetInput.value;
+    if (editIcon) {
+      editIcon.innerHTML =
+        '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>' +
+        '<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>';
+    }
+
+    if (editAlphabetBtn) editAlphabetBtn.title = "Editar alfabeto";
+    if (outputBox) outputBox.textContent = "Alfabeto actualizado: " + alphabetInput.value;
   }
 }
 
-function copiarResultado(tipo){
+//7
+function copiarResultado(tipo) {
   let texto = "";
 
-  if (tipo === "encrypt"){
-    texto = outputEncryptBox.textContent.replace("Mensaje cifrado:\n", "");
+  if (tipo === "encrypt") {
+    texto = (outputEncryptBox ? outputEncryptBox.textContent : "").replace("Mensaje cifrado:\n", "");
   } else {
-    texto = outputDecryptBox.textContent.replace("Mensaje descifrado:\n", "");
+    texto = (outputDecryptBox ? outputDecryptBox.textContent : "").replace("Mensaje descifrado:\n", "");
   }
 
   if (!texto) return;
@@ -130,35 +117,38 @@ function copiarResultado(tipo){
     "Esperando mensaje cifrado..."
   ];
 
-  for (const inv of invalidos){
+  for (const inv of invalidos) {
     if (texto.trim() === inv) return;
   }
 
   if (texto.startsWith("Error")) return;
 
+  if (!navigator.clipboard) return;
+
   navigator.clipboard.writeText(texto).then(() => {
     const btn = (tipo === "encrypt") ? copyEncryptBtn : copyDecryptBtn;
-    const originalTitle = btn.title;
+    if (!btn) return;
 
+    const originalTitle = btn.title;
     btn.title = "Copiado";
-    btn.style.color = "#7ac97a";
 
     setTimeout(() => {
       btn.title = originalTitle;
-      btn.style.color = "";
     }, 1500);
   }).catch(() => {
     alert("No se pudo copiar al portapapeles");
   });
 }
 
-function cesar(texto, shift, alfabeto){
+//8
+function cesar(texto, shift, alfabeto) {
   let res = "";
   const m = alfabeto.length;
+  if (m === 0) return texto;
 
-  for (let c of texto){
+  for (let c of texto) {
     const idx = alfabeto.indexOf(c);
-    if (idx === -1){
+    if (idx === -1) {
       res += c;
     } else {
       const nuevo = (idx + (shift % m) + m) % m;
@@ -168,13 +158,15 @@ function cesar(texto, shift, alfabeto){
   return res;
 }
 
-function atbash(texto, alfabeto){
+//9
+function atbash(texto, alfabeto) {
   let res = "";
   const m = alfabeto.length;
+  if (m === 0) return texto;
 
-  for (let c of texto){
+  for (let c of texto) {
     const idx = alfabeto.indexOf(c);
-    if (idx === -1){
+    if (idx === -1) {
       res += c;
     } else {
       res += alfabeto[(m - 1) - idx];
@@ -183,75 +175,78 @@ function atbash(texto, alfabeto){
   return res;
 }
 
-function cifrar(){
-  const texto = messageEncryptInput.value;
-  const alfabeto = normalizeAlphabet(alphabetInput.value);
+//10
+function cifrar() {
+  const texto = messageEncryptInput ? messageEncryptInput.value : "";
+  const alfabeto = normalizeAlphabet(alphabetInput ? alphabetInput.value : "");
 
-  if (!texto){
-    outputEncryptBox.textContent = "Error: Escribe un mensaje para cifrar.";
+  if (!texto) {
+    if (outputEncryptBox) outputEncryptBox.textContent = "Error: Escribe un mensaje para cifrar.";
     return;
   }
 
-  if (alfabeto.length < 2){
-    outputEncryptBox.textContent = "Error: El alfabeto debe tener al menos 2 caracteres.";
+  if (alfabeto.length < 2) {
+    if (outputEncryptBox) outputEncryptBox.textContent = "Error: El alfabeto debe tener al menos 2 caracteres.";
     return;
   }
 
   let resultado = "";
-  if (metodo === "cesar"){
-    const shift = parseInt(shiftInput.value) || 0;
+  if (metodo === "cesar") {
+    const shift = parseInt(shiftInput ? shiftInput.value : "0", 10) || 0;
     resultado = cesar(texto, shift, alfabeto);
   } else {
     resultado = atbash(texto, alfabeto);
   }
 
-  outputEncryptBox.textContent = "Mensaje cifrado:\n" + resultado;
+  if (outputEncryptBox) outputEncryptBox.textContent = "Mensaje cifrado:\n" + resultado;
 }
 
-function descifrar(){
-  const texto = messageDecryptInput.value;
-  const alfabeto = normalizeAlphabet(alphabetInput.value);
+//11
+function descifrar() {
+  const texto = messageDecryptInput ? messageDecryptInput.value : "";
+  const alfabeto = normalizeAlphabet(alphabetInput ? alphabetInput.value : "");
 
-  if (!texto){
-    outputDecryptBox.textContent = "Error: Escribe un mensaje cifrado para descifrar.";
+  if (!texto) {
+    if (outputDecryptBox) outputDecryptBox.textContent = "Error: Escribe un mensaje cifrado para descifrar.";
     return;
   }
 
-  if (alfabeto.length < 2){
-    outputDecryptBox.textContent = "Error: El alfabeto debe tener al menos 2 caracteres.";
+  if (alfabeto.length < 2) {
+    if (outputDecryptBox) outputDecryptBox.textContent = "Error: El alfabeto debe tener al menos 2 caracteres.";
     return;
   }
 
   let resultado = "";
-  if (metodo === "cesar"){
-    const shift = parseInt(shiftInput.value) || 0;
+  if (metodo === "cesar") {
+    const shift = parseInt(shiftInput ? shiftInput.value : "0", 10) || 0;
     resultado = cesar(texto, -shift, alfabeto);
   } else {
     resultado = atbash(texto, alfabeto);
   }
 
-  outputDecryptBox.textContent = "Mensaje descifrado:\n" + resultado;
+  if (outputDecryptBox) outputDecryptBox.textContent = "Mensaje descifrado:\n" + resultado;
 }
 
-function detectar(){
-  const textoEncrypt = messageEncryptInput.value;
-  const textoDecrypt = messageDecryptInput.value;
+//12
+function detectar() {
+  const textoEncrypt = messageEncryptInput ? messageEncryptInput.value : "";
+  const textoDecrypt = messageDecryptInput ? messageDecryptInput.value : "";
   const texto = textoEncrypt || textoDecrypt;
 
-  const alfabeto = normalizeAlphabet(alphabetInput.value);
+  const alfabeto = normalizeAlphabet(alphabetInput ? alphabetInput.value : "");
 
-  if (!texto || alfabeto.length < 2){
-    outputBox.textContent = "Error: Necesitas un texto y un alfabeto valido (min. 2 caracteres).";
+  if (!texto || alfabeto.length < 2) {
+    if (outputBox) outputBox.textContent = "Error: Necesitas un texto y un alfabeto valido (min. 2 caracteres).";
     return;
   }
 
-  let resultado = "Modulo seleccionado: " + metodo.toUpperCase() + "\n\n";
+  let resultado = "Modulo seleccionado: " + String(metodo).toUpperCase() + "\n\n";
 
   let charFreq = {};
   let totalChars = 0;
 
-  for (let c of texto){
-    if (alfabeto.includes(c)){
+  for (let c of texto) {
+    if (alfabeto.includes(c)) {
       charFreq[c] = (charFreq[c] || 0) + 1;
       totalChars++;
     }
@@ -260,23 +255,27 @@ function detectar(){
   resultado += "Caracteres analizados: " + totalChars + "\n";
   resultado += "Top 5 mas frecuentes:\n";
 
-  const sorted = Object.entries(charFreq).sort((a,b) => b[1] - a[1]).slice(0, 5);
+  const sorted = Object.entries(charFreq)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
 
-  for (let [ch, count] of sorted){
-    const pct = totalChars ? ((count/totalChars)*100).toFixed(1) : "0.0";
+  for (let [ch, count] of sorted) {
+    const pct = totalChars ? ((count / totalChars) * 100).toFixed(1) : "0.0";
     resultado += "  '" + ch + "': " + count + " (" + pct + "%)\n";
   }
 
-  outputBox.textContent = resultado;
+  if (outputBox) outputBox.textContent = resultado;
 }
 
-function limpiar(){
-  messageEncryptInput.value = "";
-  messageDecryptInput.value = "";
+//13
+function limpiar() {
+  if (messageEncryptInput) messageEncryptInput.value = "";
+  if (messageDecryptInput) messageDecryptInput.value = "";
 
-  outputEncryptBox.textContent = "Esperando mensaje...";
-  outputDecryptBox.textContent = "Esperando mensaje cifrado...";
-  outputBox.textContent = "Listo.";
+  if (outputEncryptBox) outputEncryptBox.textContent = "Esperando mensaje...";
+  if (outputDecryptBox) outputDecryptBox.textContent = "Esperando mensaje cifrado...";
+  if (outputBox) outputBox.textContent = "Listo.";
 }
 
+//14
 setMetodo("cesar");
